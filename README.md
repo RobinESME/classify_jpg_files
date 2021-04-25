@@ -1,11 +1,11 @@
 # classify_jpg_files
 
-This program classifies jpg pictures according to the recognized objects or animals in the picture.
-Moreover, it adds into a database the new path of the picture and the normalized localisation of the objects (x, y, width, height).
+This program classifies jpg files according to the recognized objects or animals in the picture.
+Moreover, it adds into a database the new path to the picture and the normalized localisation of the objects (x, y, width, height).
 
 ## How to use it
 
-Add files you want to classify into the images folder and start the main.js file
+Add files you want to classify into the images folder and start the main.js file.
 
 ## Students
 
