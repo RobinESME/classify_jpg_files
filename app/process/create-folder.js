@@ -6,3 +6,5 @@ const folderCreater = name => fs.mkdirSync(name, {recursive: true});
 const createFolderFromClass = pred => folderCreater(R.prop('class', pred));
 
 module.exports = {createFolderFromClass};
+
+
