@@ -11,33 +11,33 @@ const {imageListJpg} = require('./app/process/select-jpg');
 const {readJpg} = require('./app/ia/filesystem');
 const {addFileName, setNewBbox} = require('./app/process/modify-content');
 
-const processFiles = data => {
-	R.forEach(pred => {
-		createFolderFromClass(pred);
-		sendToDb(pred);
-		moveFile(data.path, pred.file, pred.class);
-	}, data.prediction);
-	deleteFile(data.path);
+const processFiles = (data) => {
+  R.forEach((pred) => {
+    createFolderFromClass(pred);
+    sendToDb(pred);
+    moveFile(data.path, pred.file, pred.class);
+  }, data.prediction);
+  deleteFile(data.path);
 };
 
 (async () => {
-	const imgList = await Bromise.map(imageListJpg, readJpg);
+  const imgList = await Bromise.map(imageListJpg, readJpg);
 
-	// Load the model.
-	const model = await cocoSsd.load();
+  // Load the model.
+  const model = await cocoSsd.load();
 
-	// Classify the image.
-	const predictions = await Bromise.map(imgList, async x => {
-		const detection = await model.detect(x.jpg);
-		return R.assoc('prediction', detection, x);
-	});
+  // Classify the image.
+  const predictions = await Bromise.map(imgList, async (x) => {
+    const detection = await model.detect(x.jpg);
+    return R.assoc('prediction', detection, x);
+  });
 
-	const main = R.pipe(
-		R.map(addFileName),
-		R.map(setNewBbox),
-		R.values,
-		R.forEach(processFiles)
-	);
+  const main = R.pipe(
+    R.map(addFileName),
+    R.map(setNewBbox),
+    R.values,
+    R.forEach(processFiles)
+  );
 
-	main(predictions);
+  main(predictions);
 })();
